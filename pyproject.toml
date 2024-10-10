@@ -1,0 +1,68 @@
+[tool.poetry]
+name = "target-azure"
+version = "0.0.1"
+description = "Singer target for tap-azure, built with the Meltano Singer SDK."
+readme = "README.md"
+authors = ["Nikhil Niket <nikhil.niket@talview.com>"]
+keywords = [
+    "ELT",
+    "tap-azure",
+]
+classifiers = [
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+license = "Apache-2.0"
+
+[tool.poetry.dependencies]
+python = ">=3.10"
+singer-sdk = { version="~=0.39.1" }
+fs-s3fs = { version = "~=1.1.1", optional = true }
+requests = "~=2.32.3"
+pandas = "^2.2.2"
+azure-storage-file-datalake = "^12.16.0"
+pyarrow = "^17.0.0"
+fsspec = "^2024.6.1"
+adlfs = "^2024.7.0"
+
+[tool.poetry.dev-dependencies]
+pytest = ">=8"
+singer-sdk = { version="~=0.39.1", extras = ["testing"] }
+
+[tool.poetry.extras]
+s3 = ["fs-s3fs"]
+
+[tool.ruff]
+src = ["target_azure"]
+target-version = "py38"
+
+[tool.ruff.lint]
+ignore = [
+    "ANN101",  # missing-type-self
+    "ANN102",  # missing-type-cls
+    "COM812",  # missing-trailing-comma
+    "ISC001",  # single-line-implicit-string-concatenation
+]
+select = ["ALL"]
+
+[tool.ruff.lint.flake8-annotations]
+allow-star-arg-any = true
+
+[tool.ruff.lint.isort]
+known-first-party = ["target_azure"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[build-system]
+requires = ["poetry-core==1.9.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+# CLI declaration
+target-azure = 'target_azure.target:TargetAzureStorage.cli'
